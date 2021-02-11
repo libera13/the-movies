@@ -31,8 +31,8 @@ export default {
     return {
       filters: {
         includeAdult: true,
-        title: null,
-        query: null,
+        title: "",
+        query: "",
         year: null
       }
     };

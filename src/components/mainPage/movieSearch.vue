@@ -2,6 +2,7 @@
   <div class="head__text">
     <h1>tytuł</h1>
     <p>{{ filters }}</p>
+    <p>{{ movies }}</p>
     <!-- <input v-model="current" type="text" name="" class="searchContent" /> -->
     <MainPageFilters @update-filters="updateFilters" />
     <div class="inputWrapper">
@@ -51,7 +52,7 @@ export default class MovieSearch extends Vue {
   private search = "";
   private searchData = [];
   private movies = [];
-  private filters = {};
+  private filters: MovieSearchFilters | Record<string, any> = {};
   private currentId = null;
   private loading = false;
   private autocompleteExampleNames = autocompleteExampleNames;
@@ -80,12 +81,23 @@ export default class MovieSearch extends Vue {
     }
   }
   private async getMovies() {
-    const endpoint = `${process.env.VUE_APP_API_URL}movie/popular?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&page=1`;
+    const baseQuery = `${process.env.VUE_APP_API_URL}search/movie?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&page=1`;
+    const userQuery = this.getUserQuery();
+    const endpoint = baseQuery + userQuery;
     const { data } = await axiosInstance.get(endpoint);
     this.movies = data;
   }
   private updateFilters(payload: MovieSearchFilters) {
     this.filters = payload;
+    this.getMovies();
+  }
+  private getUserQuery() {
+    const { query, year, includeAdult } = this.filters;
+    let userQuery = "";
+    if (query) userQuery += `&query=${query}`;
+    if (year) userQuery += `&year=${year}`;
+    if (includeAdult) userQuery += `&include_adult=${includeAdult}`;
+    return userQuery;
   }
 }
 </script>
