@@ -2,7 +2,7 @@
   <div class="head__text">
     <h1>tytuł</h1>
     <p>{{ filters }}</p>
-    <p>{{ movies }}</p>
+    <!--    <p>{{ movies }}</p>-->
     <!-- <input v-model="current" type="text" name="" class="searchContent" /> -->
     <MainPageFilters @update-filters="updateFilters" />
     <div class="inputWrapper">
@@ -40,40 +40,44 @@
       </div>
     </v-container>
 
-    <v-container v-else-if="noData">
-      <div class="text-xs-center">
-        <h2>No movies with this search</h2>
-      </div>
-    </v-container>
+    <template v-else>
+      <v-container
+        v-if="movies.results && movies.results.length > 0"
+        grid-list-xl
+      >
+        <v-layout wrap>
+          <v-flex
+            xs4
+            v-for="(item, index) in movies.results"
+            :key="'mainPanel-movie' + index"
+            mb-2
+          >
+            <v-card>
+              <v-img :src="getMovieImage(item)" aspect-ratio="1"></v-img>
 
-    <v-container v-else grid-list-xl>
-      <v-layout wrap>
-        <v-flex
-          xs4
-          v-for="(item, index) in movies.results"
-          :key="'mainPanel-movie' + index"
-          mb-2
-        >
-          <v-card>
-            <v-img :src="getMovieImage(item)" aspect-ratio="1"></v-img>
+              <v-card-title primary-title>
+                <div>
+                  <h2>{{ item.title }}</h2>
+                  <div>Rok: {{ item.release_date }}</div>
+                  <div>Ocena: {{ item.vote_average }}</div>
+                </div>
+              </v-card-title>
 
-            <v-card-title primary-title>
-              <div>
-                <h2>{{ item.title }}</h2>
-                <div>Rok: {{ item.release_date }}</div>
-                <div>Ocena: {{ item.vote_average }}</div>
-              </div>
-            </v-card-title>
-
-            <v-card-actions class="justify-center">
-              <!--              <v-btn color="green" @click="singleMovie(item.imdbID)"-->
-              <!--                >View</v-btn-->
-              <!--              >-->
-            </v-card-actions>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>
+              <v-card-actions class="justify-center">
+                <!--              <v-btn color="green" @click="singleMovie(item.imdbID)"-->
+                <!--                >View</v-btn-->
+                <!--              >-->
+              </v-card-actions>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </v-container>
+      <v-container v-else>
+        <div class="text-xs-center">
+          <h2>No movies with this search</h2>
+        </div>
+      </v-container>
+    </template>
   </div>
 </template>
 
@@ -82,7 +86,10 @@ import { autocompleteExampleNames } from "./mainPageUtils";
 import { axiosInstance } from "@/services/axiosInstance";
 import { Component, Vue } from "vue-property-decorator";
 import MainPageFilters from "@/components/mainPage/MainPageMovieFilters.vue";
-import { MovieSearchFilters } from "@/components/mainPage/mainPageI";
+import {
+  MovieSearchFilters,
+  MovieSearchResult
+} from "@/components/mainPage/mainPageI";
 @Component({
   components: { MainPageFilters }
 })
@@ -90,10 +97,9 @@ export default class MovieSearch extends Vue {
   private dataFetched = false;
   private placeholderWorks = false;
   private current = "";
-  private noData = false;
   private search = "";
   private searchData = [];
-  private movies = [];
+  private movies = { results: [] };
   private filters: MovieSearchFilters | Record<string, any> = {};
   private currentId = null;
   private loading = false;
@@ -135,10 +141,8 @@ export default class MovieSearch extends Vue {
     try {
       this.loading = true;
       const { data } = await axiosInstance.get(endpoint);
-      this.noData = data.length <= 0;
       this.movies = data;
     } catch (e) {
-      this.noData = true;
       console.log(e);
       //  TODO: notyfikacja o błędzie
     } finally {
@@ -158,6 +162,7 @@ export default class MovieSearch extends Vue {
     return userQuery;
   }
   private getMovieImage(item: MovieSearchResult) {
+    // TODO: give some placeholder foto
     return item.poster_path
       ? `${process.env.VUE_APP_IMAGE_BASE_URL}${this.POSTER_SIZE}${item.poster_path}`
       : null;
