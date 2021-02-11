@@ -4,3 +4,7 @@ export interface MovieSearchFilters {
   query: string;
   year: Integer | null;
 }
+
+export interface MovieSearchResult {
+  poster_path: string | null;
+}
