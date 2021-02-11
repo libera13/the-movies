@@ -3,13 +3,16 @@
     <v-btn dark color="primary">
       Hejo
     </v-btn>
+    <movie-search />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-
-@Component
+import MovieSearch from "@/components/mainPage/movieSearch.vue";
+@Component({
+  components: { MovieSearch }
+})
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
 }
