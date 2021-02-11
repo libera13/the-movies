@@ -1,7 +1,7 @@
 <template>
   <div class="head__text">
     <h1>tytuł</h1>
-    <p></p>
+    <p>{{ movies }}</p>
     <!-- <input v-model="current" type="text" name="" class="searchContent" /> -->
     <div class="inputWrapper">
       <v-autocomplete
@@ -38,7 +38,6 @@
 import { autocompleteExampleNames } from "./mainPageUtils";
 import { axiosInstance } from "@/services/axiosInstance";
 import { Component, Vue } from "vue-property-decorator";
-
 @Component
 export default class MovieSearch extends Vue {
   private dataFetched = false;
@@ -46,10 +45,14 @@ export default class MovieSearch extends Vue {
   private current = "";
   private search = "";
   private searchData = [];
+  private movies = [];
   private currentId = null;
   private loading = false;
   private autocompleteExampleNames = autocompleteExampleNames;
-  $router: any;
+
+  mounted() {
+    this.getMovies();
+  }
 
   public redirect() {
     if (this.currentId) {
@@ -69,6 +72,11 @@ export default class MovieSearch extends Vue {
         this.loading = false;
       }
     }
+  }
+  private async getMovies() {
+    const endpoint = `${process.env.VUE_APP_API_URL}movie/popular?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&page=1`;
+    const { data } = await axiosInstance.get(endpoint);
+    this.movies = data;
   }
 }
 </script>
