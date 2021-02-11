@@ -1,8 +1,9 @@
 <template>
   <div class="head__text">
     <h1>tytuł</h1>
-    <p>{{ movies }}</p>
+    <p>{{ filters }}</p>
     <!-- <input v-model="current" type="text" name="" class="searchContent" /> -->
+    <MainPageFilters @update-filters="updateFilters" />
     <div class="inputWrapper">
       <v-autocomplete
         required
@@ -38,7 +39,11 @@
 import { autocompleteExampleNames } from "./mainPageUtils";
 import { axiosInstance } from "@/services/axiosInstance";
 import { Component, Vue } from "vue-property-decorator";
-@Component
+import MainPageFilters from "@/components/mainPage/MainPageMovieFilters.vue";
+import { MovieSearchFilters } from "@/components/mainPage/mainPageI";
+@Component({
+  components: { MainPageFilters }
+})
 export default class MovieSearch extends Vue {
   private dataFetched = false;
   private placeholderWorks = false;
@@ -46,6 +51,7 @@ export default class MovieSearch extends Vue {
   private search = "";
   private searchData = [];
   private movies = [];
+  private filters = {};
   private currentId = null;
   private loading = false;
   private autocompleteExampleNames = autocompleteExampleNames;
@@ -77,6 +83,9 @@ export default class MovieSearch extends Vue {
     const endpoint = `${process.env.VUE_APP_API_URL}movie/popular?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&page=1`;
     const { data } = await axiosInstance.get(endpoint);
     this.movies = data;
+  }
+  private updateFilters(payload: MovieSearchFilters) {
+    this.filters = payload;
   }
 }
 </script>
