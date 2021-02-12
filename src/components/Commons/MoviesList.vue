@@ -27,6 +27,8 @@
                   <h2>{{ item.title }}</h2>
                   <div>Rok: {{ item.release_date }}</div>
                   <div>Ocena: {{ item.vote_average }}</div>
+                  <v-btn @click="addToLiked(item)">Add do liked</v-btn>
+                  <v-btn @click="addToNotLiked">Add do not liked</v-btn>
                 </div>
               </v-card-title>
 
@@ -49,6 +51,8 @@
 </template>
 
 <script>
+import { axiosInstance } from "@/services/axiosInstance";
+
 export default {
   name: "MoviesList",
   props: ["movies", "loading"],
@@ -68,7 +72,17 @@ export default {
       return item.poster_path
         ? `${process.env.VUE_APP_IMAGE_BASE_URL}${this.POSTER_SIZE}${item.poster_path}`
         : null;
-    }
+    },
+    async addToLiked(item) {
+      // TODO: Define user name
+      const { data } = await axiosInstance.post("http://localhost:5000/users", {
+        user: "xxx",
+        likedMoviesId: item.id
+      });
+      console.log(data);
+    },
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    addToNotLiked() {}
   }
 };
 </script>
