@@ -47,14 +47,17 @@
         </div>
       </v-container>
     </template>
+    <DialogUserName />
   </div>
 </template>
 
 <script>
 import { axiosInstance } from "@/services/axiosInstance";
+import DialogUserName from "@/components/Commons/DialogUserName";
 
 export default {
   name: "MoviesList",
+  components: { DialogUserName },
   props: ["movies", "loading"],
   data() {
     return {
