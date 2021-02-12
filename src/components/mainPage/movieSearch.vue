@@ -106,7 +106,7 @@ export default class MovieSearch extends Vue {
     let userQuery = "";
     if (query) userQuery += `&query=${query}`;
     if (year) userQuery += `&year=${year}`;
-    if (includeAdult) userQuery += `&include_adult=${includeAdult}`;
+    userQuery += `&include_adult=${includeAdult}`;
     return userQuery;
   }
 }

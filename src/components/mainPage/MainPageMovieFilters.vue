@@ -3,6 +3,7 @@
     <h3>Filtry</h3>
     <div class="filters">
       <!--      query-->
+      <p>By wyszukać wpisz tytuł</p>
       <v-text-field
         placeholder="tytuł"
         @input="debounceInput($event, 'query')"
@@ -30,7 +31,7 @@ export default {
   data() {
     return {
       filters: {
-        includeAdult: true,
+        includeAdult: false,
         title: "",
         query: "",
         year: null
