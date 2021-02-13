@@ -15,7 +15,7 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
           <v-list-item to="/about">
-            <v-list-item-title>Liked</v-list-item-title>
+            <v-list-item-title>Watchlist</v-list-item-title>
           </v-list-item>
           <!--          <v-list-item to="/add-partner">-->
           <!--            <v-list-item-title>Add Partner</v-list-item-title>-->
