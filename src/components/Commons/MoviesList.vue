@@ -37,12 +37,12 @@
                 color="primary"
                 small
                 depressed
-                @click="toogleToLiked(item)"
+                @click="toggleToLiked(item)"
               >
                 <v-icon left>mdi-check</v-icon>
                 Watchlist
               </v-btn>
-              <v-btn v-else small depressed @click="toogleToLiked(item)">
+              <v-btn v-else small depressed @click="toggleToLiked(item)">
                 <v-icon left>mdi-plus</v-icon>
                 Watchlist
               </v-btn>
@@ -71,10 +71,12 @@
 import { axiosInstance } from "@/services/axiosInstance";
 import DialogUserName from "@/components/Commons/DialogUserName";
 import { USERNAME } from "@/constants";
+import { toggleToLikedMixin } from "@/mixins/toogleToLikedMixin";
 
 export default {
   name: "MoviesList",
   components: { DialogUserName },
+  mixins: [toggleToLikedMixin],
   props: {
     movies: {
       type: Object,
@@ -89,7 +91,6 @@ export default {
   data() {
     return {
       isDialogUserName: false,
-      likedMovies: [],
       //Sizes: w300, w780, w1280, original
       IMAGE_SIZE: "w1280",
       // w92, w154, w185, w342, w500, w780, original
@@ -108,73 +109,6 @@ export default {
       return item.poster_path
         ? `${process.env.VUE_APP_IMAGE_BASE_URL}${this.POSTER_SIZE}${item.poster_path}`
         : null;
-    },
-    async toogleToLiked(item) {
-      const userName = localStorage.getItem(USERNAME);
-
-      if (userName) {
-        const { data } = await axiosInstance.get(
-          `http://localhost:5000/users?user=${userName}`
-        );
-        // add if user exits in db
-        if (data[0]) {
-          this.putToUserNewLikedMovies(userName, item, data);
-        }
-        // add if user not exists in db
-        else {
-          this.sendNewUserWithLikedMovies(userName, item);
-        }
-      } else {
-        this.isDialogUserName = true;
-      }
-    },
-    async sendNewUserWithLikedMovies(userName, item) {
-      const newMovies = [item];
-      try {
-        await axiosInstance.post(`http://localhost:5000/users`, {
-          user: userName,
-          likedMovies: newMovies
-        });
-        this.likedMovies = newMovies;
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async putToUserNewLikedMovies(userName, item, data) {
-      let newMovies = [];
-      // add movie
-      const likedMoviesIds = data[0].likedMovies.map(x => x.id);
-      if (!likedMoviesIds.includes(item.id)) {
-        newMovies = [...data[0].likedMovies, item];
-      }
-      // delete movie
-      else {
-        newMovies = data[0].likedMovies.filter(
-          likedMovie => likedMovie.id !== item.id
-        );
-      }
-      try {
-        await axiosInstance.put(`http://localhost:5000/users/${data[0].id}`, {
-          user: userName,
-          likedMovies: newMovies
-        });
-        this.likedMovies = newMovies;
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    async getLikedMovies() {
-      const userName = localStorage.getItem(USERNAME);
-      if (userName) {
-        const { data } = await axiosInstance.get(
-          `http://localhost:5000/users?user=${userName}`
-        );
-        this.likedMovies = data[0].likedMovies;
-        return data[0].likedMovies;
-      }
-    },
-    isLiked(id) {
-      return this.likedMovies.map(x => x.id).includes(id);
     }
   }
 };
