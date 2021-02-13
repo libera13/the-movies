@@ -22,8 +22,9 @@
             <v-card>
               <!-- TODO: highlight already liked or not liked-->
               <v-img
-                @click="handleClick(item.title)"
+                @click="handleImageClick(item.id)"
                 :src="getMovieImage(item)"
+                class="clickable"
                 aspect-ratio="1"
               ></v-img>
 
@@ -94,8 +95,8 @@ export default {
     this.getLikedMovies();
   },
   methods: {
-    handleClick(movieName) {
-      this.$router.push({ path: `/movie/${movieName}` });
+    handleImageClick(movieId) {
+      this.$router.push({ path: `/movie/${movieId}` });
     },
     getMovieImage(item) {
       // TODO: give some placeholder foto
@@ -176,4 +177,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.clickable {
+  cursor: pointer;
+}
+</style>

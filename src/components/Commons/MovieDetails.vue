@@ -1,91 +1,98 @@
 <template>
   <section class="movie">
     <div class="movie__container" v-if="!loading">
-      <header
-        class="movie__header"
-        :class="{ 'movie__header--page': type === 'page' }"
-        :style="{ 'background-image': 'url(' + movieBackdropSrc + ')' }"
-      >
-        <div
-          class="movie__wrap movie__wrap--header"
-          :class="{ 'movie__wrap--page': type === 'page' }"
+      <template v-if="singleMovie">
+        <header
+          class="movie__header"
+          :class="{ 'movie__header--page': type === 'page' }"
+          :style="{ 'background-image': 'url(' + movieBackdropSrc + ')' }"
         >
-          <figure class="movie__poster">
-            <img
-              v-if="moviePosterSrc"
-              class="movie__img"
-              src="../../assets/placeholder.png"
-              v-img="moviePosterSrc"
-              alt="placeholder image"
-            />
-          </figure>
-          <div class="movie__title">
-            <h1 class="movie__title-text">
-              {{ singleMovie.title }}
-              <span v-if="singleMovie.tagline">{{ singleMovie.tagline }}</span>
-            </h1>
-          </div>
-        </div>
-      </header>
-      <div class="movie__main">
-        <div
-          class="movie__wrap movie__wrap--main"
-          :class="{ 'movie__wrap--page': type === 'page' }"
-        >
-          <!--          <div class="movie__actions" v-if="userName">-->
-          <!--            <a-->
-          <!--              href="#"-->
-          <!--              class="movie__actions-link"-->
-          <!--              :class="{ active: favorite === true }"-->
-          <!--              @click.prevent="toggleFavorite"-->
-          <!--            >-->
-          <!--              <svg-->
-          <!--                class="movie__actions-icon"-->
-          <!--                :class="{ waiting: favorite === '' }"-->
-          <!--              >-->
-          <!--                <use xlink:href="#iconFavorite"></use>-->
-          <!--              </svg>-->
-          <!--              <span class="movie__actions-text" v-if="favorite === ''"-->
-          <!--                >Wait...</span-->
-          <!--              >-->
-          <!--              <span class="movie__actions-text" v-else-if="favorite"-->
-          <!--                >Marked as Favorite</span-->
-          <!--              >-->
-          <!--              <span class="movie__actions-text" v-else>Mark as Favorite?</span>-->
-          <!--            </a>-->
-          <!--          </div>-->
-          <div class="movie__info">
-            <div v-if="singleMovie.overview" class="movie__description">
-              {{ singleMovie.overview }}
+          <div
+            class="movie__wrap movie__wrap--header"
+            :class="{ 'movie__wrap--page': type === 'page' }"
+          >
+            <figure class="movie__poster">
+              <img
+                v-if="moviePosterSrc"
+                class="movie__img"
+                src="../../assets/placeholder.png"
+                v-img="moviePosterSrc"
+                alt="placeholder image"
+              />
+            </figure>
+            <div class="movie__title">
+              <h1 class="movie__title-text">
+                {{ singleMovie.title }}
+                <span v-if="singleMovie.tagline">{{
+                  singleMovie.tagline
+                }}</span>
+              </h1>
             </div>
-            <div class="movie__details">
-              <div
-                v-if="singleMovie.genres && singleMovie.genres.length"
-                class="movie__details-block"
-              >
-                <h2 class="movie__details-title">
-                  Genres
-                </h2>
-                <div class="movie__details-text">
-                  {{ nestedDataToString(singleMovie.genres) }}
+          </div>
+        </header>
+        <div class="movie__main">
+          <div
+            class="movie__wrap movie__wrap--main"
+            :class="{ 'movie__wrap--page': type === 'page' }"
+          >
+            <!--          <div class="movie__actions" v-if="userName">-->
+            <!--            <a-->
+            <!--              href="#"-->
+            <!--              class="movie__actions-link"-->
+            <!--              :class="{ active: favorite === true }"-->
+            <!--              @click.prevent="toggleFavorite"-->
+            <!--            >-->
+            <!--              <svg-->
+            <!--                class="movie__actions-icon"-->
+            <!--                :class="{ waiting: favorite === '' }"-->
+            <!--              >-->
+            <!--                <use xlink:href="#iconFavorite"></use>-->
+            <!--              </svg>-->
+            <!--              <span class="movie__actions-text" v-if="favorite === ''"-->
+            <!--                >Wait...</span-->
+            <!--              >-->
+            <!--              <span class="movie__actions-text" v-else-if="favorite"-->
+            <!--                >Marked as Favorite</span-->
+            <!--              >-->
+            <!--              <span class="movie__actions-text" v-else>Mark as Favorite?</span>-->
+            <!--            </a>-->
+            <!--          </div>-->
+            <div class="movie__info">
+              <div v-if="singleMovie.overview" class="movie__description">
+                {{ singleMovie.overview }}
+              </div>
+              <div class="movie__details">
+                <div
+                  v-if="singleMovie.genres && singleMovie.genres.length"
+                  class="movie__details-block"
+                >
+                  <h2 class="movie__details-title">
+                    Genres
+                  </h2>
+                  <div class="movie__details-text">
+                    {{ nestedDataToString(singleMovie.genres) }}
+                  </div>
+                </div>
+                <div
+                  v-if="singleMovie.release_date"
+                  class="movie__details-block"
+                >
+                  <h2 class="movie__details-title">
+                    Release Date
+                  </h2>
+                  <div
+                    class="movie__details-text"
+                    v-formatDate="singleMovie.release_date"
+                  ></div>
                 </div>
               </div>
-              <div v-if="singleMovie.release_date" class="movie__details-block">
-                <h2 class="movie__details-title">
-                  Release Date
-                </h2>
-                <div
-                  class="movie__details-text"
-                  v-formatDate="singleMovie.release_date"
-                ></div>
-              </div>
             </div>
           </div>
         </div>
+      </template>
+      <div v-else>
+        No Found
       </div>
-    </div>
-    <div class="movie__container" v-else>
-      No Found
     </div>
   </section>
 </template>
@@ -116,7 +123,7 @@ export default {
     };
   },
   async created() {
-    await this.getMovie(this.$route.params.movieName);
+    await this.getMovie(this.$route.params.movieId);
     this.poster();
     this.backdrop();
   },
@@ -124,14 +131,15 @@ export default {
     poster() {
       if (this.singleMovie.poster_path) {
         this.moviePosterSrc =
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2" +
+          `${process.env.VUE_APP_IMAGE_BASE_URL}w600_and_h900_bestv2` +
           this.singleMovie.poster_path;
       }
     },
     backdrop() {
       if (this.singleMovie.backdrop_path) {
         this.movieBackdropSrc =
-          "https://image.tmdb.org/t/p/w500" + this.singleMovie.backdrop_path;
+          `${process.env.VUE_APP_IMAGE_BASE_URL}w500` +
+          this.singleMovie.backdrop_path;
       }
     },
     nestedDataToString(data) {
@@ -142,25 +150,18 @@ export default {
     back() {
       this.$router.push("/");
     },
-    async getMovie(movieName) {
-      const baseQuery = `${process.env.VUE_APP_API_URL}search/movie?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&page=1`;
-      const userQuery = this.getUserQuery(movieName);
-      const endpoint = baseQuery + userQuery;
+    async getMovie(movieId) {
+      const endpoint = `${process.env.VUE_APP_API_URL}movie/${movieId}?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&page=1`;
       try {
         this.loading = true;
         const { data } = await axiosInstance.get(endpoint);
-        this.singleMovie = data.results[0];
+        this.singleMovie = data;
       } catch (e) {
         console.log(e);
         //  TODO: notyfikacja o błędzie
       } finally {
         this.loading = false;
       }
-    },
-    getUserQuery(movieName) {
-      let userQuery = "";
-      userQuery += `&query=${movieName}`;
-      return userQuery;
     }
   }
 };
