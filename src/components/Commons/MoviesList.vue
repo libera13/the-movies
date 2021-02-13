@@ -12,43 +12,39 @@
         v-if="movies.results && movies.results.length > 0"
         grid-list-xl
       >
-        <v-layout wrap>
-          <v-flex
-            xs3
+        <div class="masonry">
+          <v-card
             v-for="(item, index) in movies.results"
             :key="'mainPanel-movie' + index"
-            mb-2
           >
-            <v-card>
-              <!-- TODO: highlight already liked or not liked-->
-              <v-img
-                @click="handleDetailsClick(item.id)"
-                :src="getMovieImage(item)"
-                class="clickable"
-                aspect-ratio="1"
-              ></v-img>
+            <!-- TODO: highlight already liked or not liked-->
+            <v-img
+              @click="handleDetailsClick(item.id)"
+              :src="getMovieImage(item)"
+              class="clickable"
+              aspect-ratio="1"
+            ></v-img>
 
-              <v-card-title>
-                {{ item.title }}
-              </v-card-title>
-              <v-card-text>
-                <div>
-                  <div>Rok: {{ item.release_date }}</div>
-                  <div>Ocena: {{ item.vote_average }}</div>
-                </div>
-              </v-card-text>
-              <v-card-actions class="justify-center">
-                <v-btn
-                  small
-                  @click="addToLiked(item)"
-                  :color="isLiked(item.id) ? 'primary' : ''"
-                  >Watchlist</v-btn
-                >
-                <v-btn small @click="handleDetailsClick(item.id)">View</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
+            <v-card-title>
+              {{ item.title }}
+            </v-card-title>
+            <v-card-text>
+              <div>
+                <div>Rok: {{ item.release_date }}</div>
+                <div>Ocena: {{ item.vote_average }}</div>
+              </div>
+            </v-card-text>
+            <v-card-actions class="justify-center">
+              <v-btn
+                small
+                @click="addToLiked(item)"
+                :color="isLiked(item.id) ? 'primary' : ''"
+                >Watchlist</v-btn
+              >
+              <v-btn small @click="handleDetailsClick(item.id)">View</v-btn>
+            </v-card-actions>
+          </v-card>
+        </div>
       </v-container>
       <v-container v-else>
         <div class="text-xs-center">
@@ -85,9 +81,8 @@ export default {
       likedMovies: [],
       //Sizes: w300, w780, w1280, original
       IMAGE_SIZE: "w1280",
-
       // w92, w154, w185, w342, w500, w780, original
-      POSTER_SIZE: "w500"
+      POSTER_SIZE: "w185"
     };
   },
   mounted() {
@@ -179,5 +174,14 @@ export default {
 <style scoped>
 .clickable {
   cursor: pointer;
+}
+.masonry {
+  --auto-grid-min-size: 12rem;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(var(--auto-grid-min-size), 1fr)
+  );
+  grid-gap: 1rem;
 }
 </style>
