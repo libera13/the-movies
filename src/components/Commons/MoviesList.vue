@@ -14,7 +14,7 @@
       >
         <v-layout wrap>
           <v-flex
-            xs4
+            xs3
             v-for="(item, index) in movies.results"
             :key="'mainPanel-movie' + index"
             mb-2
@@ -28,24 +28,23 @@
                 aspect-ratio="1"
               ></v-img>
 
-              <v-card-title primary-title>
+              <v-card-title>
+                {{ item.title }}
+              </v-card-title>
+              <v-card-text>
                 <div>
-                  <h2>{{ item.title }}</h2>
                   <div>Rok: {{ item.release_date }}</div>
                   <div>Ocena: {{ item.vote_average }}</div>
-                  <v-btn
-                    @click="addToLiked(item)"
-                    :color="isLiked(item.id) ? 'primary' : ''"
-                    >Watchlist</v-btn
-                  >
-                  <v-btn @click="handleDetailsClick(item.id)">Details</v-btn>
                 </div>
-              </v-card-title>
-
+              </v-card-text>
               <v-card-actions class="justify-center">
-                <!--              <v-btn color="green" @click="singleMovie(item.imdbID)"-->
-                <!--                >View</v-btn-->
-                <!--              >-->
+                <v-btn
+                  small
+                  @click="addToLiked(item)"
+                  :color="isLiked(item.id) ? 'primary' : ''"
+                  >Watchlist</v-btn
+                >
+                <v-btn small @click="handleDetailsClick(item.id)">View</v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
