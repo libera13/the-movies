@@ -1,0 +1,51 @@
+{
+  "users": [
+    {
+      "user": "xxx",
+      "likedMoviesId": [
+        476199,
+        353469,
+        69738,
+        546205,
+        772962,
+        700253
+      ],
+      "id": 7
+    },
+    {
+      "user": "yyy",
+      "likedMoviesId": [
+        353469,
+        622525
+      ],
+      "id": 8
+    },
+    {
+      "user": "acc",
+      "likedMoviesId": [
+        604322,
+        619955
+      ],
+      "id": 9
+    },
+    {
+      "user": "jabadadu",
+      "likedMoviesId": [
+        60098,
+        48651,
+        425048
+      ],
+      "id": 10
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

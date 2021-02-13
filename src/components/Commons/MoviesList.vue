@@ -20,6 +20,7 @@
             mb-2
           >
             <v-card>
+              <!-- TODO: highlight already liked or not liked-->
               <v-img :src="getMovieImage(item)" aspect-ratio="1"></v-img>
 
               <v-card-title primary-title>
@@ -27,8 +28,12 @@
                   <h2>{{ item.title }}</h2>
                   <div>Rok: {{ item.release_date }}</div>
                   <div>Ocena: {{ item.vote_average }}</div>
-                  <v-btn @click="addToLiked(item)">Add do liked</v-btn>
-                  <v-btn @click="addToNotLiked">Add do not liked</v-btn>
+                  <v-btn
+                    @click="addToLiked(item)"
+                    :color="isLiked(item.id) ? 'primary' : ''"
+                    >Liked</v-btn
+                  >
+                  <v-btn @click="addToNotLiked">Not liked</v-btn>
                 </div>
               </v-card-title>
 
@@ -80,15 +85,49 @@ export default {
         : null;
     },
     async addToLiked(item) {
-      // TODO: Define user name
-      const { data } = await axiosInstance.post("http://localhost:5000/users", {
-        user: "xxx",
-        likedMoviesId: item.id
-      });
-      console.log(data);
+      const userName = localStorage.getItem(USERNAME);
+
+      if (userName) {
+        console.log("userName", userName);
+        const { data } = await axiosInstance.get(
+          `http://localhost:5000/users?user=${userName}`
+        );
+        // add if user exits
+        if (data[0]) {
+          let newMoviesIds = [];
+          this.likedMoviesIds = data[0].likedMoviesId;
+          // add movie
+          if (!this.likedMoviesIds?.includes(item.id)) {
+            newMoviesIds = [...this.likedMoviesIds, item.id];
+          }
+          // delete movie
+          else {
+            newMoviesIds = this.likedMoviesIds.filter(
+              likedMovie => likedMovie !== item.id
+            );
+          }
+          await axiosInstance.put(`http://localhost:5000/users/${data[0].id}`, {
+            user: userName,
+            likedMoviesId: newMoviesIds
+          });
+        }
+        // add if user not exists
+        else {
+          const newMoviesIds = [item.id];
+          await axiosInstance.post(`http://localhost:5000/users`, {
+            user: userName,
+            likedMoviesId: newMoviesIds
+          });
+        }
+      } else {
+        this.isDialogUserName = true;
+      }
     },
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    addToNotLiked() {}
+    addToNotLiked() {},
+    isLiked(id) {
+      return this.likedMoviesIds.includes(id);
+    }
   }
 };
 </script>
