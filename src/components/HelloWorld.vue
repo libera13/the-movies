@@ -3,7 +3,6 @@
     <v-btn dark color="primary">
       Hejo
     </v-btn>
-    <movie-search />
   </div>
 </template>
 

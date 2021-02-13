@@ -64,11 +64,21 @@ import { USERNAME } from "@/constants";
 export default {
   name: "MoviesList",
   components: { DialogUserName },
-  props: ["movies", "loading"],
+  props: {
+    movies: {
+      type: Object,
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      default: () => {}
+    },
+    loading: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       isDialogUserName: false,
-      likedMoviesIds: [],
+      likedMovies: [],
       //Sizes: w300, w780, w1280, original
       IMAGE_SIZE: "w1280",
 
@@ -76,7 +86,9 @@ export default {
       POSTER_SIZE: "w500"
     };
   },
-
+  mounted() {
+    this.getLikedMovies();
+  },
   methods: {
     getMovieImage(item) {
       // TODO: give some placeholder foto
@@ -106,41 +118,52 @@ export default {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     addToNotLiked() {},
     async sendNewUserWithLikedMovies(userName, item) {
-      const newMoviesIds = [item.id];
+      const newMovies = [item];
       try {
         await axiosInstance.post(`http://localhost:5000/users`, {
           user: userName,
-          likedMoviesId: newMoviesIds
+          likedMovies: newMovies
         });
-        this.likedMoviesIds = newMoviesIds;
+        this.likedMovies = newMovies;
       } catch (e) {
         console.log(e);
       }
     },
     async putToUserNewLikedMovies(userName, item, data) {
-      let newMoviesIds = [];
+      let newMovies = [];
       // add movie
-      if (!data[0].likedMoviesId?.includes(item.id)) {
-        newMoviesIds = [...data[0].likedMoviesId, item.id];
+      const likedMoviesIds = data[0].likedMovies.map(x => x.id);
+      if (!likedMoviesIds.includes(item.id)) {
+        newMovies = [...data[0].likedMovies, item];
       }
       // delete movie
       else {
-        newMoviesIds = data[0].likedMoviesId.filter(
-          likedMovie => likedMovie !== item.id
+        newMovies = data[0].likedMovies.filter(
+          likedMovie => likedMovie.id !== item.id
         );
       }
       try {
         await axiosInstance.put(`http://localhost:5000/users/${data[0].id}`, {
           user: userName,
-          likedMoviesId: newMoviesIds
+          likedMovies: newMovies
         });
-        this.likedMoviesIds = newMoviesIds;
+        this.likedMovies = newMovies;
       } catch (e) {
         console.log(e);
       }
     },
+    async getLikedMovies() {
+      const userName = localStorage.getItem(USERNAME);
+      if (userName) {
+        const { data } = await axiosInstance.get(
+          `http://localhost:5000/users?user=${userName}`
+        );
+        this.likedMovies = data[0].likedMovies;
+        return data[0].likedMovies;
+      }
+    },
     isLiked(id) {
-      return this.likedMoviesIds.includes(id);
+      return this.likedMovies.map(x => x.id).includes(id);
     }
   }
 };

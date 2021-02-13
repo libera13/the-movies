@@ -1,38 +1,35 @@
 <template>
   <div class="head__text">
     <h1>tytuł</h1>
-    <p>{{ filters }}</p>
-    <!--    <p>{{ movies }}</p>-->
-    <!-- <input v-model="current" type="text" name="" class="searchContent" /> -->
     <MainPageFilters @update-filters="updateFilters" />
-    <div class="inputWrapper">
-      <v-autocomplete
-        required
-        v-model="currentId"
-        :items="searchData"
-        item-text="full_name"
-        item-value="id"
-        return-object
-        :loading="loading"
-        :placeholder="current"
-        append-outer-icon="mdi-magnify"
-        @click:append-outer="redirect"
-        :search-input.sync="search"
-      >
-        <!--        <template v-slot:item="data">-->
-        <!--          <template>-->
-        <!--            <v-list-item-content>-->
-        <!--              <v-list-item-title-->
-        <!--                  v-html="data.item.full_name"-->
-        <!--              ></v-list-item-title>-->
-        <!--              <v-list-item-subtitle-->
-        <!--                  v-html="data.item.prettyName"-->
-        <!--              ></v-list-item-subtitle>-->
-        <!--            </v-list-item-content>-->
-        <!--          </template>-->
-        <!--        </template>-->
-      </v-autocomplete>
-    </div>
+    <!--    <div class="inputWrapper">-->
+    <!--      <v-autocomplete-->
+    <!--        required-->
+    <!--        v-model="currentId"-->
+    <!--        :items="searchData"-->
+    <!--        item-text="full_name"-->
+    <!--        item-value="id"-->
+    <!--        return-object-->
+    <!--        :loading="loading"-->
+    <!--        :placeholder="current"-->
+    <!--        append-outer-icon="mdi-magnify"-->
+    <!--        @click:append-outer="redirect"-->
+    <!--        :search-input.sync="search"-->
+    <!--      >-->
+    <!--        &lt;!&ndash;        <template v-slot:item="data">&ndash;&gt;-->
+    <!--        &lt;!&ndash;          <template>&ndash;&gt;-->
+    <!--        &lt;!&ndash;            <v-list-item-content>&ndash;&gt;-->
+    <!--        &lt;!&ndash;              <v-list-item-title&ndash;&gt;-->
+    <!--        &lt;!&ndash;                  v-html="data.item.full_name"&ndash;&gt;-->
+    <!--        &lt;!&ndash;              ></v-list-item-title>&ndash;&gt;-->
+    <!--        &lt;!&ndash;              <v-list-item-subtitle&ndash;&gt;-->
+    <!--        &lt;!&ndash;                  v-html="data.item.prettyName"&ndash;&gt;-->
+    <!--        &lt;!&ndash;              ></v-list-item-subtitle>&ndash;&gt;-->
+    <!--        &lt;!&ndash;            </v-list-item-content>&ndash;&gt;-->
+    <!--        &lt;!&ndash;          </template>&ndash;&gt;-->
+    <!--        &lt;!&ndash;        </template>&ndash;&gt;-->
+    <!--      </v-autocomplete>-->
+    <!--    </div>-->
     <MoviesList :loading="loading" :movies="movies" />
   </div>
 </template>
