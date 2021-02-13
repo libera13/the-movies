@@ -1,6 +1,5 @@
 <template>
   <div class="filters-card">
-    <h3>Filtry</h3>
     <div class="filters">
       <!--      query-->
       <p>By wyszukać wpisz tytuł</p>

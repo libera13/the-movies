@@ -1,6 +1,6 @@
 <template>
   <div class="head__text">
-    <h1>tytuł</h1>
+    <BannerCarousel :movies="popularMovies" />
     <MainPageFilters @update-filters="updateFilters" />
     <!--    <div class="inputWrapper">-->
     <!--      <v-autocomplete-->
@@ -41,23 +41,20 @@ import { Component, Vue } from "vue-property-decorator";
 import MainPageFilters from "@/components/mainPage/MainPageMovieFilters.vue";
 import { MovieSearchFilters } from "@/components/mainPage/mainPageI";
 import MoviesList from "@/components/Commons/MoviesList.vue";
+import BannerCarousel from "@/components/mainPage/BannerCarousel.vue";
 @Component({
-  components: { MoviesList, MainPageFilters }
+  components: { BannerCarousel, MoviesList, MainPageFilters }
 })
 export default class MovieSearch extends Vue {
-  private dataFetched = false;
-  private placeholderWorks = false;
-  private current = "";
-  private search = "";
-  private searchData = [];
   private movies = { results: [] };
+  private popularMovies = [];
   private filters: MovieSearchFilters | Record<string, any> = {};
   private currentId = null;
   private loading = false;
   private autocompleteExampleNames = autocompleteExampleNames;
 
   mounted() {
-    // this.getMovies();
+    Promise.allSettled([this.getPopularMovies()]);
   }
 
   public redirect() {
@@ -78,6 +75,13 @@ export default class MovieSearch extends Vue {
         this.loading = false;
       }
     }
+  }
+
+  private async getPopularMovies() {
+    const { data } = await axiosInstance.get(
+      `${process.env.VUE_APP_API_URL}movie/popular?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&page=1`
+    );
+    this.popularMovies = data.results;
   }
   private async getMovies() {
     const baseQuery = `${process.env.VUE_APP_API_URL}search/movie?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&page=1`;
