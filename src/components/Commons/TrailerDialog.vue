@@ -20,20 +20,27 @@
     </v-btn>
 
     <v-dialog
-      hide-overlay
       v-model="isTrailerDialog"
       :width="videoWidth"
       @click:outside="stop"
     >
-      <div v-if="trailerId">
-        <youtube
-          :video-id="trailerId"
-          :player-vars="{ autoplay: 1 }"
-          @ready="ready"
-          :player-height="videoHeight"
-          :player-width="videoWidth"
-        ></youtube>
-      </div>
+      <v-card>
+        <div v-if="trailerId">
+          <youtube
+            :video-id="trailerId"
+            :player-vars="{ autoplay: 1 }"
+            @ready="ready"
+            :player-height="videoHeight"
+            :player-width="videoWidth"
+          ></youtube>
+        </div>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="stop">
+            Zamknij
+          </v-btn>
+        </v-card-actions>
+      </v-card>
     </v-dialog>
   </div>
 </template>
