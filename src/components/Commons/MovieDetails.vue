@@ -1,7 +1,8 @@
 <template>
   <section class="movie">
-    <div class="movie__container" v-if="!loading">
+    <v-container class="movie__container" v-if="!loading">
       <template v-if="singleMovie">
+        <!--        {{ cast }}-->
         <header
           class="movie__header"
           :class="{ 'movie__header--page': type === 'page' }"
@@ -89,11 +90,37 @@
             </div>
           </div>
         </div>
+        <div class="movie__main">
+          <v-row justify="center">
+            <v-col
+              v-for="value in ['cast', 'crew']"
+              :key="value"
+              cols="12"
+              sm="4"
+            >
+              <v-card elevation="3" max-width="250">
+                <div style="margin-left: 40px">
+                  <v-card-title>{{ value.toLocaleUpperCase() }}</v-card-title>
+                  <v-virtual-scroll
+                    :bench="10"
+                    :items="cast[value]"
+                    height="500"
+                    item-height="250"
+                  >
+                    <template v-slot:default="{ item }">
+                      <PersonCard :person="item" :subheading="false" />
+                    </template>
+                  </v-virtual-scroll>
+                </div>
+              </v-card>
+            </v-col>
+          </v-row>
+        </div>
       </template>
       <div v-else>
         No Found
       </div>
-    </div>
+    </v-container>
   </section>
 </template>
 
@@ -101,8 +128,10 @@
 import { axiosInstance } from "@/services/axiosInstance";
 import img from "../../directives/v-image.js";
 import formatDate from "../../directives/v-formatDate.js";
+import PersonCard from "@/components/Commons/PersonCard";
 export default {
   name: "MovieDetails",
+  components: { PersonCard },
   props: {
     type: {
       default: "page"
@@ -114,7 +143,8 @@ export default {
   },
   data() {
     return {
-      singleMovie: "",
+      singleMovie: [],
+      cast: [],
       moviePosterSrc: "",
       movieBackdropSrc: "",
       dialog: false,
@@ -124,6 +154,7 @@ export default {
   },
   async created() {
     await this.getMovie(this.$route.params.movieId);
+    this.getCast(this.$route.params.movieId);
     this.poster();
     this.backdrop();
   },
@@ -147,15 +178,19 @@ export default {
       data.forEach(item => nestedArray.push(item.name));
       return nestedArray.join(", ");
     },
-    back() {
-      this.$router.push("/");
-    },
     async getMovie(movieId) {
       const endpoint = `${process.env.VUE_APP_API_URL}movie/${movieId}?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&page=1`;
+      await this.makeGETRequest(endpoint, "singleMovie");
+    },
+    getCast(movieId) {
+      const endpoint = `${process.env.VUE_APP_API_URL}movie/${movieId}/credits?api_key=${process.env.VUE_APP_API_KEY}`;
+      this.makeGETRequest(endpoint, "cast");
+    },
+    async makeGETRequest(endpoint, key) {
       try {
         this.loading = true;
         const { data } = await axiosInstance.get(endpoint);
-        this.singleMovie = data;
+        this[key] = data;
       } catch (e) {
         console.log(e);
         //  TODO: notyfikacja o błędzie
@@ -268,10 +303,6 @@ export default {
   }
   &__main {
     background: $c-light;
-    min-height: calc(100vh - 250px);
-    @include tablet-min {
-      min-height: 0;
-    }
   }
   &__actions {
     text-align: center;

@@ -16,7 +16,7 @@ export const mainRoutes = [
       import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
-    path: "/movie/:movieName",
+    path: "/movie/:movieId",
     name: "Movie",
     component: () =>
       import(
