@@ -92,19 +92,34 @@
         </div>
         <div class="movie__main">
           <!-- Buttons -->
-          <TrailerDialog
-            v-if="trailer"
-            :trailerId="trailer.key"
-            class="mb-3 ml-6"
-          />
+          <v-row justify="center">
+            <TrailerDialog
+              v-if="trailer"
+              :trailerId="trailer.key"
+              class="mb-3 mr-3"
+            />
+            <v-btn
+              v-if="isLiked(singleMovie.id)"
+              color="primary"
+              @click="toggleToLiked(singleMovie)"
+            >
+              <v-icon left>mdi-check</v-icon>
+              Watchlist
+            </v-btn>
+            <v-btn v-else @click="toggleToLiked(singleMovie)">
+              <v-icon left>mdi-plus</v-icon>
+              Watchlist
+            </v-btn>
+          </v-row>
           <v-row justify="center">
             <v-col
               v-for="value in ['cast', 'crew']"
               :key="value"
               cols="12"
-              sm="4"
+              sm="6"
+              style="display: flex; justify-content: center;"
             >
-              <v-card elevation="3" max-width="250">
+              <v-card elevation="3" min-width="250">
                 <div style="margin-left: 40px">
                   <v-card-title>{{ value.toLocaleUpperCase() }}</v-card-title>
                   <v-virtual-scroll
@@ -127,6 +142,7 @@
         No Found
       </div>
     </v-container>
+    <dialog-user-name v-model="isDialogUserName" />
   </section>
 </template>
 
@@ -136,10 +152,13 @@ import img from "../../directives/v-image.js";
 import formatDate from "../../directives/v-formatDate.js";
 import PersonCard from "@/components/Commons/PersonCard";
 import TrailerDialog from "@/components/Commons/TrailerDialog";
+import DialogUserName from "@/components/Commons/DialogUserName";
+import { toggleToLikedMixin } from "@/mixins/toogleToLikedMixin";
 
 export default {
   name: "MovieDetails",
-  components: { TrailerDialog, PersonCard },
+  components: { DialogUserName, TrailerDialog, PersonCard },
+  mixins: [toggleToLikedMixin],
   props: {
     type: {
       default: "page"
