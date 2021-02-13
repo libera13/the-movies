@@ -8,10 +8,7 @@
     </v-container>
 
     <template v-else>
-      <v-container
-        v-if="movies.results && movies.results.length > 0"
-        grid-list-xl
-      >
+      <v-container v-if="movies.results && movies.results.length > 0">
         <div class="masonry">
           <v-card
             v-for="(item, index) in movies.results"
@@ -34,14 +31,28 @@
                 <div>Ocena: {{ item.vote_average }}</div>
               </div>
             </v-card-text>
-            <v-card-actions class="justify-center">
+            <v-card-actions>
+              <v-btn
+                v-if="isLiked(item.id)"
+                color="primary"
+                small
+                depressed
+                @click="toogleToLiked(item)"
+              >
+                <v-icon left>mdi-check</v-icon>
+                Watchlist
+              </v-btn>
+              <v-btn v-else small depressed @click="toogleToLiked(item)">
+                <v-icon left>mdi-plus</v-icon>
+                Watchlist
+              </v-btn>
               <v-btn
                 small
-                @click="addToLiked(item)"
-                :color="isLiked(item.id) ? 'primary' : ''"
-                >Watchlist</v-btn
+                depressed
+                class="view-button"
+                @click="handleDetailsClick(item.id)"
+                >View</v-btn
               >
-              <v-btn small @click="handleDetailsClick(item.id)">View</v-btn>
             </v-card-actions>
           </v-card>
         </div>
@@ -98,7 +109,7 @@ export default {
         ? `${process.env.VUE_APP_IMAGE_BASE_URL}${this.POSTER_SIZE}${item.poster_path}`
         : null;
     },
-    async addToLiked(item) {
+    async toogleToLiked(item) {
       const userName = localStorage.getItem(USERNAME);
 
       if (userName) {
@@ -117,8 +128,6 @@ export default {
         this.isDialogUserName = true;
       }
     },
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    addToNotLiked() {},
     async sendNewUserWithLikedMovies(userName, item) {
       const newMovies = [item];
       try {
@@ -183,5 +192,8 @@ export default {
     minmax(var(--auto-grid-min-size), 1fr)
   );
   grid-gap: 1rem;
+}
+.view-button {
+  color: #5799ef;
 }
 </style>
