@@ -1,16 +1,20 @@
 <template>
-  <MoviesList :movies="movies" :loading="loading" />
+  <div>
+    <MoviesList :movies="movies" :loading="loading" />
+    <DialogUserName v-model="isDialogUserName" />
+  </div>
 </template>
 
 <script>
 import MoviesList from "@/components/Commons/MoviesList";
 import { axiosInstance } from "@/services/axiosInstance";
 import { USERNAME } from "@/constants";
+import DialogUserName from "@/components/Commons/DialogUserName";
 export default {
   name: "UserMovies",
-  components: { MoviesList },
+  components: { DialogUserName, MoviesList },
   data() {
-    return { movies: {}, loading: false };
+    return { movies: {}, loading: false, isDialogUserName: false };
   },
   mounted() {
     this.getLikedMovies();
@@ -27,7 +31,7 @@ export default {
           results: likedMovies
         };
       } else {
-        // TODO: handle no username
+        this.isDialogUserName = true;
       }
     }
   }

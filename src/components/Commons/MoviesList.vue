@@ -48,7 +48,7 @@
       </v-container>
       <v-container v-else>
         <div class="text-xs-center">
-          <h2>No movies with this search</h2>
+          <h2>No movies</h2>
         </div>
       </v-container>
     </template>
