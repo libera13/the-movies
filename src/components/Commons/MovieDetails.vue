@@ -91,6 +91,12 @@
           </div>
         </div>
         <div class="movie__main">
+          <!-- Buttons -->
+          <TrailerDialog
+            v-if="trailer"
+            :trailerId="trailer.key"
+            class="mb-3 ml-6"
+          />
           <v-row justify="center">
             <v-col
               v-for="value in ['cast', 'crew']"
@@ -129,9 +135,11 @@ import { axiosInstance } from "@/services/axiosInstance";
 import img from "../../directives/v-image.js";
 import formatDate from "../../directives/v-formatDate.js";
 import PersonCard from "@/components/Commons/PersonCard";
+import TrailerDialog from "@/components/Commons/TrailerDialog";
+
 export default {
   name: "MovieDetails",
-  components: { PersonCard },
+  components: { TrailerDialog, PersonCard },
   props: {
     type: {
       default: "page"
@@ -145,6 +153,7 @@ export default {
     return {
       singleMovie: [],
       cast: [],
+      trailer: {},
       moviePosterSrc: "",
       movieBackdropSrc: "",
       dialog: false,
@@ -155,6 +164,7 @@ export default {
   async created() {
     await this.getMovie(this.$route.params.movieId);
     this.getCast(this.$route.params.movieId);
+    this.getTrailers(this.$route.params.movieId);
     this.poster();
     this.backdrop();
   },
@@ -185,6 +195,13 @@ export default {
     getCast(movieId) {
       const endpoint = `${process.env.VUE_APP_API_URL}movie/${movieId}/credits?api_key=${process.env.VUE_APP_API_KEY}`;
       this.makeGETRequest(endpoint, "cast");
+    },
+    async getTrailers(movieId) {
+      const endpoint = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${process.env.VUE_APP_API_KEY}&language=en-US`;
+      await this.makeGETRequest(endpoint, "trailers");
+      this.trailer = this.trailers.results.find(trailer => {
+        return trailer.type === "Trailer";
+      });
     },
     async makeGETRequest(endpoint, key) {
       try {
