@@ -47,13 +47,14 @@
         </div>
       </v-container>
     </template>
-    <DialogUserName />
+    <DialogUserName v-model="isDialogUserName" />
   </div>
 </template>
 
 <script>
 import { axiosInstance } from "@/services/axiosInstance";
 import DialogUserName from "@/components/Commons/DialogUserName";
+import { USERNAME } from "@/constants";
 
 export default {
   name: "MoviesList",
@@ -61,6 +62,8 @@ export default {
   props: ["movies", "loading"],
   data() {
     return {
+      isDialogUserName: false,
+      likedMoviesIds: [],
       //Sizes: w300, w780, w1280, original
       IMAGE_SIZE: "w1280",
 

@@ -1,11 +1,6 @@
 <template>
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent max-width="600px">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on">
-          Open Dialog
-        </v-btn>
-      </template>
       <v-card>
         <v-form v-model="valid" @submit.prevent="submit" ref="form">
           <v-card-title>
@@ -40,10 +35,14 @@
 </template>
 
 <script>
+import { USERNAME } from "@/constants";
+
 export default {
   name: "DialogUserName",
+  props: {
+    value: Boolean
+  },
   data: () => ({
-    dialog: false,
     valid: false,
     name: "",
     nameRules: [
@@ -51,11 +50,21 @@ export default {
       v => v.length <= 10 || "Nazwa nie może być dłuższa niż 10 znaków"
     ]
   }),
+  computed: {
+    dialog: {
+      get() {
+        return this.value;
+      },
+      set(value) {
+        this.$emit("input", value);
+      }
+    }
+  },
   methods: {
     submit() {
       this.$refs.form.validate();
       if (this.valid) {
-        console.log(this.name);
+        localStorage.setItem(USERNAME, this.name);
         this.dialog = false;
       }
     }
