@@ -13,24 +13,27 @@
           <v-card
             v-for="(item, index) in movies.results"
             :key="'mainPanel-movie' + index"
+            class="card"
           >
             <!-- TODO: highlight already liked or not liked-->
-            <v-img
-              @click="handleDetailsClick(item.id)"
-              :src="getMovieImage(item)"
-              class="clickable"
-              aspect-ratio="1"
-            ></v-img>
+            <div>
+              <v-img
+                @click="handleDetailsClick(item.id)"
+                :src="getMovieImage(item)"
+                class="clickable"
+                aspect-ratio="1"
+              ></v-img>
 
-            <v-card-title>
-              {{ item.title }}
-            </v-card-title>
-            <v-card-text>
-              <div>
-                <div>Rok: {{ item.release_date }}</div>
-                <div>Ocena: {{ item.vote_average }}</div>
-              </div>
-            </v-card-text>
+              <v-card-title>
+                {{ item.title }}
+              </v-card-title>
+              <v-card-text>
+                <div>
+                  <div>Rok: {{ item.release_date }}</div>
+                  <div>Ocena: {{ item.vote_average }}</div>
+                </div>
+              </v-card-text>
+            </div>
             <v-card-actions>
               <v-btn
                 v-if="isLiked(item.id)"
@@ -129,5 +132,10 @@ export default {
 }
 .view-button {
   color: #5799ef;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 </style>
