@@ -9,7 +9,12 @@
       <p>{{ userName }}</p>
     </v-app-bar>
     <v-navigation-drawer absolute bottom temporary v-model="drawer">
-      <v-list nav dense>
+      <div class="navigation-btn">
+        <v-btn text depressed @click="drawer = !drawer">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </div>
+      <v-list class="navigation-list" nav dense>
         <v-list-item-group active-class="primary">
           <v-list-item to="/">
             <v-list-item-title>Home</v-list-item-title>
@@ -17,6 +22,7 @@
           <v-list-item to="/watchlist">
             <v-list-item-title>Watchlist</v-list-item-title>
           </v-list-item>
+
           <!--          <v-list-item to="/add-partner">-->
           <!--            <v-list-item-title>Add Partner</v-list-item-title>-->
           <!--          </v-list-item>-->
@@ -42,4 +48,13 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.navigation-btn {
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 10px 0 0;
+}
+.navigation-list {
+  margin-top: 10px;
+}
+</style>
