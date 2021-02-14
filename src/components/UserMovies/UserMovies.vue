@@ -23,13 +23,20 @@ export default {
     async getLikedMovies() {
       const userName = localStorage.getItem(USERNAME);
       if (userName) {
-        const { data } = await axiosInstance.get(
-          `http://localhost:5000/users?user=${userName}`
-        );
-        const likedMovies = data[0].likedMovies;
-        this.movies = {
-          results: likedMovies
-        };
+        this.loading = true;
+        try {
+          const { data } = await axiosInstance.get(
+            `http://localhost:5000/users?user=${userName}`
+          );
+          const likedMovies = data[0].likedMovies;
+          this.movies = {
+            results: likedMovies
+          };
+        } catch (e) {
+          console.log(e);
+        } finally {
+          this.loading = false;
+        }
       } else {
         this.isDialogUserName = true;
       }

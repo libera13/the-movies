@@ -1,9 +1,13 @@
 <template>
   <div>
     <v-container v-if="loading">
-      <div class="text-xs-center">
-        <v-progress-circular indeterminate :size="150" :width="8" color="green">
-        </v-progress-circular>
+      <div>
+        <v-progress-linear
+          color="deep-purple accent-4"
+          indeterminate
+          rounded
+          height="6"
+        ></v-progress-linear>
       </div>
     </v-container>
 
