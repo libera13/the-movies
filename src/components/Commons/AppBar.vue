@@ -8,13 +8,13 @@
       <v-spacer></v-spacer>
       <p>{{ userName }}</p>
     </v-app-bar>
-    <v-navigation-drawer v-model="drawer" right app temporary>
+    <v-navigation-drawer absolute bottom temporary v-model="drawer">
       <v-list nav dense>
         <v-list-item-group active-class="primary">
           <v-list-item to="/">
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/about">
+          <v-list-item to="/watchlist">
             <v-list-item-title>Watchlist</v-list-item-title>
           </v-list-item>
           <!--          <v-list-item to="/add-partner">-->
