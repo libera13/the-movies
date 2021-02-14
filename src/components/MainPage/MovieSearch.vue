@@ -19,7 +19,7 @@ import BannerCarousel from "@/components/MainPage/BannerCarousel.vue";
 export default class MovieSearch extends Vue {
   private movies = { results: [] };
   private popularMovies = [];
-  private filters: MovieSearchFilters | Record<string, any> = {};
+  private filters: MovieSearchFilters | Record<string, string | number> = {};
   private loading = false;
 
   mounted() {
@@ -42,7 +42,6 @@ export default class MovieSearch extends Vue {
       this.movies = data;
     } catch (e) {
       console.log(e);
-      //  TODO: notyfikacja o błędzie
     } finally {
       this.loading = false;
     }

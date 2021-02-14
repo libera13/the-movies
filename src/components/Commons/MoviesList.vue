@@ -21,7 +21,6 @@
             :key="'mainPanel-movie' + index"
             class="card"
           >
-            <!-- TODO: highlight already liked or not liked-->
             <div>
               <v-img
                 @click="handleDetailsClick(item.id)"
@@ -35,8 +34,8 @@
               </v-card-title>
               <v-card-text>
                 <div>
-                  <div>Rok: {{ item.release_date }}</div>
-                  <div>Ocena: {{ item.vote_average }}</div>
+                  <div>Year: {{ item.release_date }}</div>
+                  <div>Vote: {{ item.vote_average }}</div>
                 </div>
               </v-card-text>
             </div>
@@ -111,7 +110,6 @@ export default {
       this.$router.push({ path: `/movie/${movieId}` });
     },
     getMovieImage(item) {
-      // TODO: give some placeholder foto
       return item.poster_path
         ? `${process.env.VUE_APP_IMAGE_BASE_URL}${this.POSTER_SIZE}${item.poster_path}`
         : null;

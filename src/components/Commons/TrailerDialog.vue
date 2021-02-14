@@ -1,3 +1,4 @@
+<!--suppress HtmlUnknownTag, HtmlUnknownTag -->
 <template>
   <div>
     <v-btn
@@ -27,6 +28,7 @@
     >
       <v-card>
         <div v-if="trailerId">
+          <!--suppress HtmlUnknownTag -->
           <youtube
             :video-id="trailerId"
             :player-vars="{ autoplay: 1 }"
@@ -38,7 +40,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn color="blue darken-1" text @click="stop">
-            Zamknij
+            Close
           </v-btn>
         </v-card-actions>
       </v-card>

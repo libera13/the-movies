@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 export const axiosInstance = axios.create({
   headers: {
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json"
   },
   timeout: 60000
 });

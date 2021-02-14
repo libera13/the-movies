@@ -4,28 +4,28 @@
       <v-card>
         <v-form v-model="valid" @submit.prevent="submit" ref="form">
           <v-card-title>
-            <span class="headline">Uzupełnij pola by kontynuować</span>
+            <span class="headline">Fill fields to continue</span>
           </v-card-title>
           <v-card-text>
             <v-container>
               <v-row>
                 <v-text-field
-                  label="Nazwa użytkownika*"
+                  label="user name*"
                   v-model="name"
                   :rules="nameRules"
                   required
                 ></v-text-field>
               </v-row>
             </v-container>
-            <small>*wymagane pola</small>
+            <small>*required fields</small>
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="blue darken-1" text @click="dialog = false">
-              Zamknij
+              Close
             </v-btn>
             <v-btn color="primary" :disabled="!valid" text @click="submit">
-              Zapisz
+              Save
             </v-btn>
           </v-card-actions>
         </v-form>

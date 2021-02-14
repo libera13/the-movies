@@ -46,22 +46,11 @@ export default {
       type: String,
       required: false
     }
-  },
-  methods: {
-    determineMediaType(media) {
-      return media.first_air_date || media.last_air_date ? "tv" : "movies";
-    }
   }
 };
 </script>
 
 <style scoped>
-.slide-link {
-  text-decoration: none;
-}
-.slide:hover {
-  opacity: 0.9;
-}
 .background-div {
   width: 100%;
   height: 150px;

@@ -75,7 +75,7 @@ export default {
 .person-name {
   font-size: 1em;
   font-weight: bold;
-  margin: 10px 0px 5px 0px;
+  margin: 10px 0 5px 0;
 }
 .person-character {
   font-size: 0.85em;

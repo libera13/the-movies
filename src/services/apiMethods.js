@@ -14,7 +14,7 @@ export const sendNewUserWithLikedMovies = async (userName, item) => {
 };
 
 export const putToUserNewLikedMovies = async (userName, item, data) => {
-  let newMovies = [];
+  let newMovies;
   // add movie
   const likedMoviesIds = data[0].likedMovies.map(x => x.id);
   if (!likedMoviesIds.includes(item.id)) {

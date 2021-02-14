@@ -2,17 +2,17 @@
   <div class="filters-card">
     <div class="filters">
       <!--      query-->
-      <p class="info-text">By wyszukać wpisz tytuł</p>
+      <p class="info-text">Enter title to search</p>
       <div class="filters-inputs">
         <v-text-field
           dark
-          placeholder="tytuł"
+          placeholder="title"
           @input="debounceInput($event, 'query')"
         ></v-text-field>
         <!--      year-->
         <v-text-field
           dark
-          placeholder="rok"
+          placeholder="year"
           type="number"
           @input="debounceInput($event, 'year')"
         ></v-text-field>
@@ -20,7 +20,7 @@
         <v-checkbox
           dark
           @change="debounceInput($event, 'includeAdult')"
-          label="dla dorosłych"
+          label="for adults"
         />
       </div>
     </div>
