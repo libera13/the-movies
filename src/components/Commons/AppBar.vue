@@ -8,7 +8,7 @@
       <v-spacer></v-spacer>
       <p>{{ userName }}</p>
     </v-app-bar>
-    <v-navigation-drawer absolute bottom temporary v-model="drawer">
+    <v-navigation-drawer app dark disable-resize-watcher v-model="drawer">
       <div class="navigation-btn">
         <v-btn text depressed @click="drawer = !drawer">
           <v-icon>mdi-close</v-icon>

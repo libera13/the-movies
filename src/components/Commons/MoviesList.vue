@@ -1,5 +1,6 @@
 <template>
   <div>
+    <DialogUserName v-model="isDialogUserName" />
     <v-container v-if="loading">
       <div>
         <v-progress-linear
@@ -16,6 +17,7 @@
         <div class="masonry">
           <v-card
             v-for="(item, index) in movies.results"
+            dark
             :key="'mainPanel-movie' + index"
             class="card"
           >
@@ -70,14 +72,11 @@
         </div>
       </v-container>
     </template>
-    <DialogUserName v-model="isDialogUserName" />
   </div>
 </template>
 
 <script>
-import { axiosInstance } from "@/services/axiosInstance";
 import DialogUserName from "@/components/Commons/DialogUserName";
-import { USERNAME } from "@/constants";
 import { toggleToLikedMixin } from "@/mixins/toogleToLikedMixin";
 
 export default {

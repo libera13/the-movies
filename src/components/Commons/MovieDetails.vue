@@ -36,28 +36,6 @@
             class="movie__wrap movie__wrap--main"
             :class="{ 'movie__wrap--page': type === 'page' }"
           >
-            <!--          <div class="movie__actions" v-if="userName">-->
-            <!--            <a-->
-            <!--              href="#"-->
-            <!--              class="movie__actions-link"-->
-            <!--              :class="{ active: favorite === true }"-->
-            <!--              @click.prevent="toggleFavorite"-->
-            <!--            >-->
-            <!--              <svg-->
-            <!--                class="movie__actions-icon"-->
-            <!--                :class="{ waiting: favorite === '' }"-->
-            <!--              >-->
-            <!--                <use xlink:href="#iconFavorite"></use>-->
-            <!--              </svg>-->
-            <!--              <span class="movie__actions-text" v-if="favorite === ''"-->
-            <!--                >Wait...</span-->
-            <!--              >-->
-            <!--              <span class="movie__actions-text" v-else-if="favorite"-->
-            <!--                >Marked as Favorite</span-->
-            <!--              >-->
-            <!--              <span class="movie__actions-text" v-else>Mark as Favorite?</span>-->
-            <!--            </a>-->
-            <!--          </div>-->
             <div class="movie__info">
               <div v-if="singleMovie.overview" class="movie__description">
                 {{ singleMovie.overview }}
@@ -117,9 +95,9 @@
               :key="value"
               cols="12"
               sm="6"
-              style="display: flex; justify-content: center;"
+              class="cards-col"
             >
-              <v-card elevation="3" min-width="250">
+              <v-card dark elevation="3" min-width="250">
                 <div style="margin-left: 40px">
                   <v-card-title>{{ value.toLocaleUpperCase() }}</v-card-title>
                   <v-virtual-scroll
@@ -346,7 +324,7 @@ export default {
     }
   }
   &__main {
-    background: $c-light;
+    background: $c-light-dark;
   }
   &__actions {
     text-align: center;
@@ -416,6 +394,7 @@ export default {
     font-weight: 300;
     font-size: 13px;
     line-height: 1.8;
+    color: $c-white;
     margin-bottom: 20px;
     @include tablet-min {
       margin-bottom: 30px;
@@ -443,7 +422,13 @@ export default {
       font-weight: 300;
       font-size: 14px;
       margin-top: 5px;
+      color: $c-white;
     }
   }
+}
+.cards-col {
+  display: flex;
+  justify-content: center;
+  background-color: $c-light-dark;
 }
 </style>

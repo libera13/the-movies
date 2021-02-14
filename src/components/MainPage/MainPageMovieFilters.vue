@@ -2,7 +2,7 @@
   <div class="filters-card">
     <div class="filters">
       <!--      query-->
-      <p>By wyszukać wpisz tytuł</p>
+      <p class="info-text">By wyszukać wpisz tytuł</p>
       <div class="filters-inputs">
         <v-text-field
           dark
@@ -53,12 +53,12 @@ export default {
 
 <style scoped lang="scss">
 @import "./src/scss/media-queries";
+@import "./src/scss/variables";
 
 .filters {
   display: grid;
   padding: 1rem;
   min-width: 180px;
-  background-color: darkslateblue;
 }
 .filters-inputs {
   max-width: 800px;
@@ -69,5 +69,8 @@ export default {
   @include mobile-only {
     grid-template-columns: 60% 20%;
   }
+}
+.info-text {
+  color: $c-white;
 }
 </style>

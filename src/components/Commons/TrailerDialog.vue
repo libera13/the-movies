@@ -21,6 +21,7 @@
 
     <v-dialog
       v-model="isTrailerDialog"
+      dark
       :width="videoWidth"
       @click:outside="stop"
     >

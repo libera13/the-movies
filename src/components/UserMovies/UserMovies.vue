@@ -1,7 +1,7 @@
 <template>
   <div>
-    <MoviesList :movies="movies" :loading="loading" />
     <DialogUserName v-model="isDialogUserName" />
+    <MoviesList :movies="movies" :loading="loading" />
   </div>
 </template>
 
