@@ -1,8 +1,8 @@
 <template>
   <div class="head__text">
-    <BannerCarousel :movies="popularMovies" />
     <MainPageFilters @update-filters="updateFilters" />
-    <MoviesList :loading="loading" :movies="movies" />
+    <BannerCarousel v-show="!filters.query" :movies="popularMovies" />
+    <MoviesList :loading="loading" v-show="filters.query" :movies="movies" />
   </div>
 </template>
 
