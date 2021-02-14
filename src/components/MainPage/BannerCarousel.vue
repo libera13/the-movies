@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import BannerOverlay from "@/components/mainPage/BannerOverlay";
+import BannerOverlay from "@/components/MainPage/BannerOverlay";
 export default {
   name: "BannerCarousel",
   props: {

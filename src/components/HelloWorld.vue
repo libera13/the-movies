@@ -8,7 +8,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import MovieSearch from "@/components/mainPage/movieSearch.vue";
+import MovieSearch from "@/components/MainPage/MovieSearch.vue";
 @Component({
   components: { MovieSearch }
 })

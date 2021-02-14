@@ -142,7 +142,7 @@
         No Found
       </div>
     </v-container>
-    <div>
+    <div v-else>
       <v-progress-linear
         color="deep-purple accent-4"
         indeterminate
