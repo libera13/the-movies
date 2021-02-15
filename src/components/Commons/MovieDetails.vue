@@ -215,6 +215,7 @@ export default {
         this[key] = data;
       } catch (e) {
         console.log(e);
+        //  TODO: notyfikacja o błędzie
       } finally {
         this.loading = false;
       }
@@ -289,6 +290,10 @@ export default {
     opacity: 0;
     transform: scale(0.97) translateZ(0);
     transition: opacity 0.5s ease, transform 0.5s ease;
+    &.is-loaded {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
   &__title {
     position: relative;
@@ -346,6 +351,9 @@ export default {
       &:hover {
         color: rgba($c-dark, 0.75);
       }
+      &.active {
+        color: $c-dark;
+      }
     }
     &-icon {
       width: 16px;
@@ -353,6 +361,9 @@ export default {
       margin: 0 10px 0 0;
       fill: rgba($c-dark, 0.5);
       transition: fill 0.5s ease, transform 0.5s ease;
+      &.waiting {
+        transform: scale(0.8, 0.8);
+      }
     }
     &-link:hover &-icon {
       fill: rgba($c-dark, 0.75);
