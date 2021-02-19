@@ -13,7 +13,7 @@ export const toggleToLikedMixin = {
     };
   },
   methods: {
-    async toggleToLiked(item) {
+    async toggleToLiked(movieId) {
       const userName = localStorage.getItem(USERNAME);
 
       if (userName) {
@@ -24,13 +24,16 @@ export const toggleToLikedMixin = {
         if (data[0]) {
           this.likedMovies = await putToUserNewLikedMovies(
             userName,
-            item,
+            movieId,
             data
           );
         }
         // add if user not exists in db
         else {
-          this.likedMovies = await sendNewUserWithLikedMovies(userName, item);
+          this.likedMovies = await sendNewUserWithLikedMovies(
+            userName,
+            movieId
+          );
         }
       } else {
         this.isDialogUserName = true;
@@ -47,7 +50,7 @@ export const toggleToLikedMixin = {
       }
     },
     isLiked(id) {
-      return this.likedMovies.map(x => x.id).includes(id);
+      return this.likedMovies.includes(id);
     }
   }
 };

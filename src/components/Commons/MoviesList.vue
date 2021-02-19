@@ -45,12 +45,12 @@
                 color="primary"
                 small
                 depressed
-                @click="toggleToLiked(item)"
+                @click="toggleToLiked(item.id)"
               >
                 <v-icon left>mdi-check</v-icon>
                 Watchlist
               </v-btn>
-              <v-btn v-else small depressed @click="toggleToLiked(item)">
+              <v-btn v-else small depressed @click="toggleToLiked(item.id)">
                 <v-icon left>mdi-plus</v-icon>
                 Watchlist
               </v-btn>

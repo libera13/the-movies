@@ -79,12 +79,12 @@
             <v-btn
               v-if="isLiked(singleMovie.id)"
               color="primary"
-              @click="toggleToLiked(singleMovie)"
+              @click="toggleToLiked(singleMovie.id)"
             >
               <v-icon left>mdi-check</v-icon>
               Watchlist
             </v-btn>
-            <v-btn v-else @click="toggleToLiked(singleMovie)">
+            <v-btn v-else @click="toggleToLiked(singleMovie.id)">
               <v-icon left>mdi-plus</v-icon>
               Watchlist
             </v-btn>
