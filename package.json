@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "json-server": "json-server --watch db.json --port 5000",
-    "dev": "concurrently \"npm run serve\" \"npm run json-server\""
+    "dev": "concurrently \"npm run serve\" \"npm run json-server\"",
+    "gh-pages-deploy": "node scripts/gh-pages-deploy.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -44,6 +45,8 @@
     "typescript": "~3.9.3",
     "vue-cli-plugin-vuetify": "~2.1.0",
     "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.7.0"
+    "vuetify-loader": "^1.7.0",
+    "execa": "latest"
+
   }
 }
