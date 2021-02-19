@@ -18,7 +18,7 @@ export const toggleToLikedMixin = {
 
       if (userName) {
         const { data } = await axiosInstance.get(
-          `http://localhost:5000/users?user=${userName}`
+          `${process.env.VUE_APP_API_JSON_SERVE_URL}users?user=${userName}`
         );
         // add if user exits in db
         if (data[0]) {
@@ -40,7 +40,7 @@ export const toggleToLikedMixin = {
       const userName = localStorage.getItem(USERNAME);
       if (userName) {
         const { data } = await axiosInstance.get(
-          `http://localhost:5000/users?user=${userName}`
+          `${process.env.VUE_APP_API_JSON_SERVE_URL}users?user=${userName}`
         );
         this.likedMovies = data[0].likedMovies;
         return data[0].likedMovies;

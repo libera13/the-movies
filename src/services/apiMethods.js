@@ -1,9 +1,9 @@
 import { axiosInstance } from "@/services/axiosInstance";
 
 export const sendNewUserWithLikedMovies = async (userName, item) => {
-  const newMovies = [item];
+  const newMovies = [item.id];
   try {
-    await axiosInstance.post(`http://localhost:5000/users`, {
+    await axiosInstance.post(`${process.env.VUE_APP_API_JSON_SERVE_URL}users`, {
       user: userName,
       likedMovies: newMovies
     });
@@ -18,19 +18,20 @@ export const putToUserNewLikedMovies = async (userName, item, data) => {
   // add movie
   const likedMoviesIds = data[0].likedMovies.map(x => x.id);
   if (!likedMoviesIds.includes(item.id)) {
-    newMovies = [...data[0].likedMovies, item];
+    newMovies = [likedMoviesIds, item.id];
   }
   // delete movie
   else {
-    newMovies = data[0].likedMovies.filter(
-      likedMovie => likedMovie.id !== item.id
-    );
+    newMovies = likedMoviesIds.filter(likedMovieId => likedMovieId !== item.id);
   }
   try {
-    await axiosInstance.put(`http://localhost:5000/users/${data[0].id}`, {
-      user: userName,
-      likedMovies: newMovies
-    });
+    await axiosInstance.put(
+      `${process.env.VUE_APP_API_JSON_SERVE_URL}users/${data[0].id}`,
+      {
+        user: userName,
+        likedMovies: newMovies
+      }
+    );
     return newMovies;
   } catch (e) {
     console.log(e);

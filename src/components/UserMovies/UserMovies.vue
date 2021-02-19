@@ -26,11 +26,11 @@ export default {
         this.loading = true;
         try {
           const { data } = await axiosInstance.get(
-            `http://localhost:5000/users?user=${userName}`
+            `${process.env.VUE_APP_API_JSON_SERVE_URL}users?user=${userName}`
           );
-          const likedMovies = data[0].likedMovies;
+
           this.movies = {
-            results: likedMovies
+            results: await this.getLikedMoviesData(data)
           };
         } catch (e) {
           console.log(e);
@@ -40,6 +40,29 @@ export default {
       } else {
         this.isDialogUserName = true;
       }
+    },
+    async getLikedMoviesData(data) {
+      const promises = [];
+
+      const likedMoviesIds = data[0].likedMovies;
+
+      likedMoviesIds.forEach(movieId =>
+        promises.push(
+          axiosInstance.get(
+            `${process.env.VUE_APP_API_URL}movie/${movieId}?api_key=${process.env.VUE_APP_API_KEY}&language=en-US&page=1`
+          )
+        )
+      );
+
+      const results = await Promise.allSettled(promises);
+
+      const likedMovies = results.reduce((preVal, curVal) => {
+        if (curVal.status === "fulfilled") {
+          return [...preVal, curVal.value.data];
+        }
+      }, []);
+
+      return likedMovies;
     }
   }
 };
